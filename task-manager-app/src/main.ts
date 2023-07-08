@@ -1,18 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { enableSwagger } from './swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const config = new DocumentBuilder()
-    .setTitle('Tasks example')
-    .setDescription('The taks manager API description')
-    .setVersion('1.0')
-    .addTag('tasks')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  enableSwagger(app);
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
